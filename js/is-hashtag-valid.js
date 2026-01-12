@@ -51,7 +51,7 @@ const isHashtagValid = (value) => {
     if (isError) {
       errorMessage = rule.error;
     }
-    return isError;
+    return !isError;
   });
 };
 
