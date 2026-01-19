@@ -1,6 +1,7 @@
 
 import { isEscapeKey } from './util.js';
 import { isHashtagValid, error } from './is-hashtag-valid.js';
+import { initImageEditor, resetEditor } from './image-editor.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = imgUploadForm.querySelector('.img-upload__input');
@@ -52,6 +53,8 @@ function openImgEditor() {
   imgEditorCancelButton.addEventListener('click', closeImgEditor);
   inputHashtags.addEventListener('change', onHashtagInput);
   imgUploadForm.addEventListener('submit', onFormSubmit);
+
+  initImageEditor();
 }
 
 function closeImgEditor() {
@@ -62,6 +65,8 @@ function closeImgEditor() {
 
   inputHashtags.removeEventListener('change', onHashtagInput);
   imgUploadForm.removeEventListener('submit', onFormSubmit);
+
+  resetEditor();
 
   pristine.reset();
   imgUploadForm.reset();
