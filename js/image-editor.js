@@ -11,38 +11,11 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-const updateScale = (value) => {
-  currentScale = value;
-  scaleControlValue.value = `${currentScale}%`;
-  const scaleValue = currentScale / 100;
-  imagePreview.style.transform = `scale(${scaleValue})`;
-};
-
-const initScale = () => {
-  updateScale(SCALE_DEFAULT);
-
-  scaleControlSmaller.addEventListener('click', () => {
-    let newValue = currentScale - SCALE_STEP;
-    if (newValue < SCALE_MIN) {
-      newValue = SCALE_MIN;
-    }
-    updateScale(newValue);
-  });
-
-  scaleControlBigger.addEventListener('click', () => {
-    let newValue = currentScale + SCALE_STEP;
-    if (newValue > SCALE_MAX) {
-      newValue = SCALE_MAX;
-    }
-    updateScale(newValue);
-  });
-};
-
-
 const effectsList = document.querySelector('.effects__list');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
+const originalEffect = document.querySelector('#effect-none');
 
 const EFFECTS = {
   none: {
@@ -90,6 +63,34 @@ const EFFECTS = {
 };
 
 let currentEffect = 'none';
+
+const updateScale = (value) => {
+  currentScale = value;
+  scaleControlValue.value = `${currentScale}%`;
+  const scaleValue = currentScale / 100;
+  imagePreview.style.transform = `scale(${scaleValue})`;
+};
+
+const initScale = () => {
+  updateScale(SCALE_DEFAULT);
+
+  scaleControlSmaller.addEventListener('click', () => {
+    let newValue = currentScale - SCALE_STEP;
+    if (newValue < SCALE_MIN) {
+      newValue = SCALE_MIN;
+    }
+    updateScale(newValue);
+  });
+
+  scaleControlBigger.addEventListener('click', () => {
+    let newValue = currentScale + SCALE_STEP;
+    if (newValue > SCALE_MAX) {
+      newValue = SCALE_MAX;
+    }
+    updateScale(newValue);
+  });
+};
+
 
 const initSlider = () => {
   if (!effectLevelSlider || !window.noUiSlider) {
@@ -169,22 +170,11 @@ const resetEditor = () => {
     });
   }
 
-  if (effectLevelContainer) {
-    effectLevelContainer.classList.add('hidden');
-  }
+  effectLevelContainer.classList.add('hidden');
+  imagePreview.style.filter = '';
+  effectLevelValue.value = '';
+  originalEffect.checked = true;
 
-  if (imagePreview) {
-    imagePreview.style.filter = '';
-  }
-
-  if (effectLevelValue) {
-    effectLevelValue.value = '';
-  }
-
-  const originalEffect = document.querySelector('#effect-none');
-  if (originalEffect) {
-    originalEffect.checked = true;
-  }
 };
 
 const initImageEditor = () => {
@@ -194,5 +184,7 @@ const initImageEditor = () => {
     initEffects();
   }
 };
+
+initImageEditor();
 
 export { initImageEditor, resetEditor };
