@@ -16,7 +16,7 @@ const showDataError = () => {
 const showNotification = (elem, cbKeyDown) => {
   const messageTemplate = document.querySelector(`#${elem}`).content.querySelector(`.${elem}`);
   const messageContainer = messageTemplate.cloneNode(true);
-  const button = messageContainer.querySelector('.button');
+  const button = messageContainer.querySelector('button');
   document.body.appendChild(messageContainer);
 
   function closeNotification(evt) {
