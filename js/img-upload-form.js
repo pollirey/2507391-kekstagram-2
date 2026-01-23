@@ -3,6 +3,7 @@ import { isEscapeKey } from './util.js';
 import { isHashtagValid, error } from './is-hashtag-valid.js';
 import { resetEditor } from './image-editor.js';
 import { sendData } from './api.js';
+import { KeyMessages } from './util.js';
 import { showNotification } from './notification.js';
 
 const SubmitButtonText = {
@@ -18,11 +19,6 @@ const inputHashtags = imgUploadForm.querySelector('.text__hashtags');
 const inputDescription = imgUploadForm.querySelector('.text__description');
 const submitButton = imgUploadForm.querySelector('.img-upload__submit');
 
-
-const KeyMessages = {
-  Success: 'success',
-  Error: 'error'
-};
 
 const onDocumentKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
