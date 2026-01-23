@@ -1,9 +1,8 @@
 
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, KeyMessages } from './util.js';
 import { isHashtagValid, error } from './is-hashtag-valid.js';
 import { resetEditor } from './image-editor.js';
 import { sendData } from './api.js';
-import { KeyMessages } from './util.js';
 import { showNotification } from './notification.js';
 
 const SubmitButtonText = {
