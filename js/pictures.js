@@ -54,7 +54,7 @@ const initFilters = () => {
   if (!imgFiltersContainer) {
     return;
   }
-  imgFiltersContainer.classList.remove('img-filters__inactive');
+  imgFiltersContainer.classList.remove('img-filters--inactive');
   const filterButtons = imgFiltersContainer.querySelectorAll('.img-filters__button');
   const debouncedApplyFilter = debounce(applyFilter, 500);
   imgFiltersContainer.addEventListener('click', (evt) => {
@@ -94,4 +94,3 @@ export const renderPictures = (data) => {
   picturesContainer.appendChild(picturesListFragment);
   initFilters();
 };
-
