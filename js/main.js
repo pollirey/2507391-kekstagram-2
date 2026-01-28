@@ -7,6 +7,7 @@ import { showDataError} from './notification';
 
 import { renderPictures } from './pictures.js';
 
+
 getData ()
   .then((data) => {
     renderPictures(data);
