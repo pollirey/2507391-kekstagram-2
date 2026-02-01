@@ -1,6 +1,5 @@
-
 import { isEscapeKey, KeyMessages } from './util.js';
-import { isHashtagValid, error } from './is-hashtag-valid.js';
+import { isHashtagValid, getErrorMessage } from './is-hashtag-valid.js';
 import { resetEditor } from './image-editor.js';
 import { sendData } from './api.js';
 import { showNotification } from './notification.js';
@@ -10,14 +9,26 @@ const SubmitButtonText = {
   SENDING: 'Публикуем...'
 };
 
-const imgUploadForm = document.querySelector('.img-upload__form');
-const imgUploadInput = imgUploadForm.querySelector('.img-upload__input');
-const imgEditor = imgUploadForm.querySelector('.img-upload__overlay');
-const imgEditorCancelButton = imgUploadForm.querySelector('.img-upload__cancel');
-const inputHashtags = imgUploadForm.querySelector('.text__hashtags');
-const inputDescription = imgUploadForm.querySelector('.text__description');
-const submitButton = imgUploadForm.querySelector('.img-upload__submit');
+const imgUploadForm = document.querySelector('#upload-select-image');
+const imgUploadInput = document.querySelector('#upload-file');
+const imgEditor = document.querySelector('.img-upload__overlay');
+const imgEditorCancelButton = document.querySelector('#upload-cancel');
+const inputHashtags = document.querySelector('.text__hashtags');
+const inputDescription = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
+const previewEffects = document.querySelectorAll('.effects__preview');
 
+const handleFileUpload = () => {
+  const file = imgUploadInput.files[0];
+  if (file) {
+    const previewImgUrl = URL.createObjectURL(file);
+    const imagePreview = document.querySelector('.img-upload__preview img');
+    imagePreview.src = previewImgUrl;
+    previewEffects.forEach((effect) => {
+      effect.style.backgroundImage = `url(${previewImgUrl})`;
+    });
+  }
+};
 
 const onDocumentKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -47,7 +58,6 @@ const blockSubmitButton = (isDisabled, buttonText) => {
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-
   if (pristine.validate()) {
     blockSubmitButton(true, SubmitButtonText.SENDING);
 
@@ -66,10 +76,10 @@ const onFormSubmit = (evt) => {
   }
 };
 
-pristine.addValidator(inputHashtags, isHashtagValid, error, 2, false);
+pristine.addValidator(inputHashtags, isHashtagValid, getErrorMessage, 2, false);
 
 pristine.addValidator(inputDescription, (value) => {
-  const hasNumber = value.length <= 140 ;
+  const hasNumber = value.length <= 140;
   return hasNumber;
 }, 'не более 140 символов');
 
@@ -77,29 +87,36 @@ function openImgEditor() {
   imgEditor.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeyDown);
-  imgEditorCancelButton.addEventListener('click', closeImgEditor);
-  inputHashtags.addEventListener('change', onHashtagInput);
+  imgEditorCancelButton.addEventListener('click', onCloseImgEditor);
+  inputHashtags.addEventListener('input', onHashtagInput);
   imgUploadForm.addEventListener('submit', onFormSubmit);
+
+  handleFileUpload();
 }
 
 function closeImgEditor() {
   imgEditor.classList.add('hidden');
-  document.removeEventListener('keydown', onDocumentKeyDown);
   document.body.classList.remove('modal-open');
-  imgEditorCancelButton.removeEventListener('click', closeImgEditor);
-
-  inputHashtags.removeEventListener('change', onHashtagInput);
+  document.removeEventListener('keydown', onDocumentKeyDown);
+  imgEditorCancelButton.removeEventListener('click', onCloseImgEditor);
+  inputHashtags.removeEventListener('input', onHashtagInput);
   imgUploadForm.removeEventListener('submit', onFormSubmit);
 
   resetEditor();
-
   pristine.reset();
   imgUploadForm.reset();
 }
 
+function onCloseImgEditor() {
+  return closeImgEditor();
+}
+
+const onImgUploadInputChange = () => {
+  openImgEditor();
+};
+
 const renderImgEditor = () => {
-  imgUploadInput.addEventListener('change', openImgEditor);
+  imgUploadInput.addEventListener('change', onImgUploadInputChange);
 };
 
 export { renderImgEditor };
-

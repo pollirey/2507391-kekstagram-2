@@ -24,25 +24,30 @@ const showNotification = (elem, cbKeyDown) => {
     const inner = messageContainer.querySelector(`.${elem}__inner`);
     const innerTitle = messageContainer.querySelector(`.${elem}__title`);
 
-    if (
-      (evt.target !== inner && evt.target !== innerTitle) ||
-      evt.target === button ||
-      isEscapeKey(evt)
-    ) {
+    if (![inner, innerTitle].includes(evt.target)) {
       messageContainer.remove();
       document.body.classList.remove('modal-open');
-      body.removeEventListener('keydown', closeNotification);
-      body.removeEventListener('click', closeNotification);
+      body.removeEventListener('click', onCloseNotification);
+    }
+  }
 
+  function onCloseNotification (evt) {
+    return closeNotification(evt);
+  }
+
+  function onCloseNotificationKeydown (evt) {
+    if (isEscapeKey(evt)) {
+      closeNotification(evt);
+      body.removeEventListener('keydown', onCloseNotificationKeydown);
       if (elem === KeyMessages.Error) {
         document.addEventListener('keydown', cbKeyDown);
       }
     }
   }
 
-  button.addEventListener('click', closeNotification);
-  body.addEventListener('keydown', closeNotification);
-  body.addEventListener('click', closeNotification);
+  button.addEventListener('click', onCloseNotification);
+  body.addEventListener('keydown', onCloseNotificationKeydown);
+  body.addEventListener('click', onCloseNotification);
 };
 
 export { showDataError, showNotification };

@@ -1,21 +1,8 @@
 
-
-let currentScale = 100;
 const SCALE_STEP = 25;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const SCALE_DEFAULT = 100;
-
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imagePreview = document.querySelector('.img-upload__preview img');
-
-const effectsList = document.querySelector('.effects__list');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectLevelContainer = document.querySelector('.img-upload__effect-level');
-const originalEffect = document.querySelector('#effect-none');
 
 const EFFECTS = {
   none: {
@@ -61,6 +48,19 @@ const EFFECTS = {
     unit: ''
   }
 };
+
+let currentScale = 100;
+
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const scaleControlValue = document.querySelector('.scale__control--value');
+const imagePreview = document.querySelector('.img-upload__preview img');
+
+const effectsList = document.querySelector('.effects__list');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevelValue = document.querySelector('.effect-level__value');
+const effectLevelContainer = document.querySelector('.img-upload__effect-level');
+const originalEffect = document.querySelector('#effect-none');
 
 let currentEffect = 'none';
 
@@ -113,7 +113,7 @@ const initSlider = () => {
     const value = effectLevelSlider.noUiSlider.get();
     const effect = EFFECTS[currentEffect];
 
-    effectLevelValue.value = value;
+    effectLevelValue.value = Number(value);
 
     if (currentEffect === 'none') {
       imagePreview.style.filter = '';

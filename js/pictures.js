@@ -1,4 +1,3 @@
-
 import { openBigPicture } from './full-size.js';
 
 const picturesContainer = document.querySelector('.pictures');
@@ -6,6 +5,7 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const picturesListFragment = document.createDocumentFragment();
 
 export const renderPictures = (data) => {
+  picturesContainer.querySelectorAll('a.picture').forEach((item) => item.remove());
   data.forEach ((photoData) => {
     const pictureElement = pictureTemplate.cloneNode(true);
 
@@ -23,3 +23,4 @@ export const renderPictures = (data) => {
 
   picturesContainer.appendChild(picturesListFragment);
 };
+
